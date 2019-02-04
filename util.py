@@ -25,7 +25,8 @@ def in_box(coords, box):
     :param box: Two tuples, where first is the bottom left, and the second is the top right of the box.
     :return: Boolean indicating if the coordinates are in the box.
     """
-    if box[0][0] < coords[0] < box[1][0] and box[1][1] < coords[1] < box[0][1]:
+    if box[0][0] < coords[0] < box[1][0] and box[1][1] > coords[1] > box[0][1]:
+    
         return True
     return False
 
@@ -35,7 +36,7 @@ def post_listing_to_slack(sc, listing):
     :param sc: A slack client.
     :param listing: A record of the listing.
     """
-    desc = "{0} | {1} | {2} | {3} | <{4}>".format(listing["area"], listing["price"], listing["bart_dist"], listing["name"], listing["url"])
+    desc = "{0} | {1} | {2} | {3} | <{4}>".format(listing.get("price"), listing.get("name"), listing.get("location"),listing.get('bedrooms'),listing.get("url"))
     sc.api_call(
         "chat.postMessage", channel=settings.SLACK_CHANNEL, text=desc,
         username='pybot', icon_emoji=':robot_face:'
